@@ -3,10 +3,6 @@ import type { MetaFunction } from "@remix-run/node";
 
 import Draw from "../Draw.client";
 
-// import styles from "../index.css";
-
-// export const links = [{ rel: "stylesheet", href: styles }];
-
 export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },
