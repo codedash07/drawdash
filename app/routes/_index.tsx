@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 
-import Draw from "../Draw.client";
+import Draw from "../components/Draw.client";
 import useHydrate from "../hooks/hydrating";
 
 export const meta: MetaFunction = () => {
