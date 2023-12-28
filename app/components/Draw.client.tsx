@@ -3,7 +3,7 @@ import "@tldraw/tldraw/tldraw.css";
 
 function Draw() {
   return (
-    <div style={{ position: "fixed", inset: 0 }}>
+    <div className="fixed inset-0">
       <Tldraw />
     </div>
   );
