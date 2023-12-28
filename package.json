@@ -8,7 +8,8 @@
     "dev": "remix dev --manual",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "sync-db": "npx prisma generate && npx prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
