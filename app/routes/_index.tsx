@@ -1,17 +1,48 @@
-import type { MetaFunction } from "@remix-run/node";
-
-import Draw from "../components/Draw.client";
-import useHydrate from "../hooks/hydrating";
+import { json, LoaderFunction, type MetaFunction } from "@remix-run/node";
+import { getUser, requireUserId } from "../utils/session.server";
+import { Link, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Drawdash" },
-    { name: "description", content: "Welcome to Drawdash!" },
+    { title: "Home | Drawdash" },
+    { name: "description", content: "Home of Drawdash!" },
   ];
 };
 
-export default function Index() {
-  const isHydrated = useHydrate();
+export const loader: LoaderFunction = async ({ request }) => {
+  const userId = await requireUserId(request);
+  const user = await getUser(request);
 
-  return isHydrated ? <Draw /> : <div>Loading...</div>;
+  return json({
+    userId,
+    user,
+  });
+};
+
+export default function Index() {
+  const data = useLoaderData<typeof loader>();
+
+  console.log("#### data", data);
+
+  return (
+    <div>
+      {data.user ? (
+        <div className="user-info">
+          <span className="text-xl font-bold">{`Hi ${data.user.username}`}</span>
+          <form action="/logout" method="post">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Logout
+            </button>
+          </form>
+        </div>
+      ) : (
+        <Link to="/login" className="text-blue-500 hover:text-blue-700">
+          Login
+        </Link>
+      )}
+    </div>
+  );
 }
