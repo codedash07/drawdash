@@ -1,5 +1,4 @@
 import {
-  TLStoreWithStatus,
   Tldraw,
   createTLStore,
   defaultShapeUtils,
@@ -8,11 +7,6 @@ import {
 import "@tldraw/tldraw/tldraw.css";
 import { useEffect, useState } from "react";
 import { initialDrawingJson } from "../utils/constants";
-
-const getRemoteSnapshot = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  return initialDrawingJson;
-};
 
 const ListenerComponent = () => {
   const editor = useEditor();
@@ -28,44 +22,28 @@ const ListenerComponent = () => {
   return null;
 };
 
-function Draw() {
-  const [storeWithStatus, setStoreWithStatus] = useState<TLStoreWithStatus>({
-    status: "loading",
+function Draw({ drawingJson }: { drawingJson?: string }) {
+  const [store] = useState(() => {
+    // Create the store
+    const newStore = createTLStore({
+      shapeUtils: defaultShapeUtils,
+    });
+
+    const snapshot = drawingJson
+      ? typeof drawingJson === "string"
+        ? JSON.parse(drawingJson)
+        : drawingJson
+      : initialDrawingJson;
+
+    // Load the snapshot
+    newStore.loadSnapshot(snapshot);
+
+    return newStore;
   });
-
-  useEffect(() => {
-    let cancelled = false;
-    async function loadRemoteSnapshot() {
-      // Get the snapshot
-      const snapshot = await getRemoteSnapshot();
-      if (cancelled) return;
-
-      // Create the store
-      const newStore = createTLStore({
-        shapeUtils: defaultShapeUtils,
-      });
-
-      // Load the snapshot
-      newStore.loadSnapshot(snapshot);
-
-      // Update the store with status
-      setStoreWithStatus({
-        store: newStore,
-        status: "synced-remote",
-        connectionStatus: "online",
-      });
-    }
-
-    loadRemoteSnapshot();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   return (
     <div className="fixed inset-0">
-      <Tldraw store={storeWithStatus}>
+      <Tldraw store={store}>
         <ListenerComponent />
       </Tldraw>
     </div>
