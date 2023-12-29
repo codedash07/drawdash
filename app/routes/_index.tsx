@@ -137,21 +137,28 @@ export default function Index() {
         </div>
       </form>
 
-      <div className="mt-12">
-        <h2 className="text-2xl font-semibold text-gray-700">Your Drawings</h2>
-        <ul className="grid grid-cols-3 gap-4 mt-4">
-          {data.drawings.map((drawing: { id: Key; name: string }) => (
-            <li key={drawing.id} className="bg-white shadow-lg rounded-lg p-4">
-              <Link
-                to={`/drawing/${drawing.id}`}
-                className="text-lg font-medium text-blue-500 hover:text-blue-600"
+      {data.drawings.length > 0 ? (
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold text-gray-700">
+            Your Drawings
+          </h2>
+          <ul className="grid grid-cols-3 gap-4 mt-4">
+            {data.drawings.map((drawing: { id: Key; name: string }) => (
+              <li
+                key={drawing.id}
+                className="bg-white shadow-lg rounded-lg p-4"
               >
-                {drawing.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+                <Link
+                  to={`/drawing/${drawing.id}`}
+                  className="text-lg font-medium text-blue-500 hover:text-blue-600"
+                >
+                  {drawing.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </div>
   );
 }
