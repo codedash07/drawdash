@@ -6,7 +6,8 @@ import {
   useEditor,
 } from "@tldraw/tldraw";
 import "@tldraw/tldraw/tldraw.css";
-import debounce from "lodash.debounce";
+// import debounce from "lodash.debounce";
+import throttle from "lodash.throttle";
 
 const ListenerComponent = ({
   handleSaveDrawing,
@@ -18,20 +19,20 @@ const ListenerComponent = ({
   useEffect(() => {
     console.log("mounting");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const saveDrawingWithDebounce = debounce((snapshot: any) => {
+    const saveDrawing = throttle((snapshot: any) => {
       const stringified = JSON.stringify(snapshot);
       handleSaveDrawing(stringified);
-    }, 1000);
+    }, 2000);
 
     const removeListener = editor.store.listen(() => {
       const snapshot = editor.store.getSnapshot();
-      saveDrawingWithDebounce(snapshot);
+      saveDrawing(snapshot);
     });
 
     return () => {
       console.log("unmounting");
       removeListener();
-      saveDrawingWithDebounce.cancel();
+      saveDrawing.cancel();
     };
   }, [editor.store, handleSaveDrawing]);
 
