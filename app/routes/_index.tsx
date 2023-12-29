@@ -19,6 +19,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     where: {
       creatorId: userId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return json({
