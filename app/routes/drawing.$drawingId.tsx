@@ -26,16 +26,13 @@ export const action: ActionFunction = async ({ request, params }) => {
     ...Object.fromEntries(await request.formData()),
   };
 
-  console.log("#### userId", userId);
-  console.log("#### data", data);
-
   await db.drawing.update({
     where: {
       id: drawingId,
       creatorId: userId,
     },
     data: {
-      content: JSON.stringify(data.stringifiedSnapshot),
+      content: data.stringifiedSnapshot as string,
     },
   });
 
@@ -72,8 +69,6 @@ const Drawing = () => {
   const handleSaveDrawing = async (stringifiedSnapshot: string) => {
     submit({ stringifiedSnapshot }, { method: "post" });
   };
-
-  console.log("#### data.drawings.content", data.drawings.content);
 
   return isHydrated ? (
     <Draw
