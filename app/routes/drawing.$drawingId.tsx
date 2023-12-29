@@ -1,7 +1,9 @@
 import { LoaderFunction, json } from "@remix-run/node";
-import { useLoaderData, useParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { db } from "../utils/db.server";
 import { requireUserId } from "../utils/session.server";
+import Draw from "../components/Draw.client";
+import useHydrate from "../hooks/hydrating";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
@@ -19,17 +21,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 const Drawing = () => {
-  const { drawingId } = useParams();
   const data = useLoaderData<typeof loader>();
 
-  console.log("#### data", data);
+  const isHydrated = useHydrate();
 
-  return (
-    <div>
-      <h1>Drawing {drawingId}</h1>
-      {/* Add your drawing logic here */}
-    </div>
-  );
+  return isHydrated ? <Draw drawingJson={data.drawings.json} /> : null;
 };
 
 export default Drawing;
