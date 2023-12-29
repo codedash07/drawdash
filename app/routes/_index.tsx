@@ -48,6 +48,24 @@ export default function Index() {
         </form>
       </div>
 
+      <form action="/new" method="post" className="mt-12">
+        <h2 className="text-lg font-semibold text-gray-700">
+          Create a New Drawing
+        </h2>
+        <input
+          type="text"
+          name="drawingName"
+          placeholder="Drawing Name"
+          className="border border-gray-300 rounded-md px-4 py-2 mt-4 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mt-4"
+          type="submit"
+        >
+          Create
+        </button>
+      </form>
+
       <div className="mt-12">
         <h2 className="text-2xl font-semibold text-gray-700">Your Drawings</h2>
         <ul className="grid grid-cols-3 gap-4 mt-4">
@@ -63,15 +81,6 @@ export default function Index() {
           ))}
         </ul>
       </div>
-
-      <form action="/new" method="post">
-        <button
-          className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mt-8"
-          type="submit"
-        >
-          New Drawing
-        </button>
-      </form>
     </div>
   );
 }
