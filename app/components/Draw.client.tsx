@@ -7,7 +7,6 @@ import {
 } from "@tldraw/tldraw";
 import "@tldraw/tldraw/tldraw.css";
 import debounce from "lodash.debounce";
-import { initialDrawingJson } from "../utils/constants";
 
 const ListenerComponent = ({
   handleSaveDrawing,
@@ -49,14 +48,13 @@ function Draw({
       shapeUtils: defaultShapeUtils,
     });
 
-    const snapshot = drawingJson
-      ? typeof drawingJson === "string"
-        ? JSON.parse(drawingJson)
-        : drawingJson
-      : initialDrawingJson;
+    if (drawingJson) {
+      const snapshot =
+        typeof drawingJson === "string" ? JSON.parse(drawingJson) : drawingJson;
 
-    // Load the snapshot
-    newStore.loadSnapshot(snapshot);
+      // Load the snapshot
+      newStore.loadSnapshot(snapshot);
+    }
 
     return newStore;
   });
