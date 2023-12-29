@@ -1,17 +1,18 @@
-import type { MetaFunction } from "@remix-run/node";
+import { redirect, ActionFunction } from "@remix-run/node";
+import { db } from "../utils/db.server";
+import { requireUserId } from "../utils/session.server";
+import { initialDrawingJson } from "../utils/constants";
 
-import Draw from "../components/Draw.client";
-import useHydrate from "../hooks/hydrating";
+export const action: ActionFunction = async ({ request }) => {
+  const userId = await requireUserId(request);
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Drawdash" },
-    { name: "description", content: "Welcome to Drawdash!" },
-  ];
+  const drawingData = await db.drawing.create({
+    data: {
+      creatorId: userId,
+      name: "New Drawing",
+      content: JSON.stringify(initialDrawingJson),
+    },
+  });
+
+  return redirect("/drawings/" + drawingData.id, { status: 303 });
 };
-
-export default function Index() {
-  const isHydrated = useHydrate();
-
-  return isHydrated ? <Draw /> : <div>Loading...</div>;
-}
