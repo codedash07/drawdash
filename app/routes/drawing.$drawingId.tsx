@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import {
   ActionFunction,
   LoaderFunction,
@@ -19,6 +20,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
+  console.log("action drawing");
   const userId = await requireUserId(request);
   const drawingId = params.drawingId;
 
@@ -66,9 +68,13 @@ const Drawing = () => {
 
   const isHydrated = useHydrate();
 
-  const handleSaveDrawing = async (stringifiedSnapshot: string) => {
-    submit({ stringifiedSnapshot }, { method: "post" });
-  };
+  const handleSaveDrawing = useCallback(
+    async (stringifiedSnapshot: string) => {
+      console.log("handleSaveDrawing");
+      submit({ stringifiedSnapshot }, { method: "post" });
+    },
+    [submit]
+  );
 
   return isHydrated ? (
     <Draw
