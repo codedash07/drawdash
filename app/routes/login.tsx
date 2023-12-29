@@ -132,7 +132,7 @@ export default function Login() {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-96 p-8 bg-white rounded shadow">
-        <h1 className="text-2xl font-bold mb-4">Login</h1>
+        <h1 className="text-2xl font-bold mb-4">Dashpad</h1>
         <form method="post">
           <input
             type="hidden"
