@@ -12,9 +12,9 @@ import { requireUserId } from "../utils/session.server";
 import Draw from "../components/Draw.client";
 import useHydrate from "../hooks/hydrating";
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: "Drawing | Drawdash" },
+    { title: data.drawing.name + " | Drawing - Drawdash" },
     { name: "description", content: "Drawing!" },
   ];
 };
