@@ -14,5 +14,5 @@ export const action: ActionFunction = async ({ request }) => {
     },
   });
 
-  return redirect("/drawings/" + drawingData.id, { status: 303 });
+  return redirect("/drawing/" + drawingData.id, { status: 303 });
 };
