@@ -1,8 +1,8 @@
-interface DrawingProps {
-  drawingId: string;
-}
+import { useParams } from "@remix-run/react";
 
-const Drawing = ({ drawingId }: DrawingProps) => {
+const Drawing = () => {
+  const { drawingId } = useParams();
+
   return (
     <div>
       <h1>Drawing {drawingId}</h1>
