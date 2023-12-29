@@ -1,7 +1,6 @@
 import { redirect, ActionFunction } from "@remix-run/node";
 import { db } from "../utils/db.server";
 import { requireUserId } from "../utils/session.server";
-import { initialDrawingJson } from "../utils/constants";
 
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
@@ -10,7 +9,6 @@ export const action: ActionFunction = async ({ request }) => {
     data: {
       creatorId: userId,
       name: "New Drawing",
-      content: JSON.stringify(initialDrawingJson),
     },
   });
 
