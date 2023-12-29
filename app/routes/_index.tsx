@@ -33,45 +33,37 @@ export default function Index() {
 
   return (
     <div>
-      {data.user ? (
-        <div className="user-info">
-          <span className="text-xl font-bold">{`Hi ${data.user.username}`}</span>
-          <form action="/logout" method="post">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              type="submit"
-            >
-              Logout
-            </button>
-          </form>
+      <span className="text-xl font-bold">{`Hi ${data.user.username}`}</span>
+      <form action="/logout" method="post">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          type="submit"
+        >
+          Logout
+        </button>
+      </form>
 
-          <form action="/new" method="post">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              type="submit"
-            >
-              New Drawing
-            </button>
-          </form>
+      <form action="/new" method="post">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          type="submit"
+        >
+          New Drawing
+        </button>
+      </form>
 
-          <ol>
-            {data.drawings.map((drawing: { id: Key; name: string }) => (
-              <li key={drawing.id}>
-                <Link
-                  to={`/drawing/${drawing.id}`}
-                  className="text-blue-500 hover:underline"
-                >
-                  {drawing.name}
-                </Link>
-              </li>
-            ))}
-          </ol>
-        </div>
-      ) : (
-        <Link to="/login" className="text-blue-500 hover:underline">
-          Login
-        </Link>
-      )}
+      <ol>
+        {data.drawings.map((drawing: { id: Key; name: string }) => (
+          <li key={drawing.id}>
+            <Link
+              to={`/drawing/${drawing.id}`}
+              className="text-blue-500 hover:underline"
+            >
+              {drawing.name}
+            </Link>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
