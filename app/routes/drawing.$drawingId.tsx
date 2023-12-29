@@ -3,6 +3,7 @@ import {
   LoaderFunction,
   MetaFunction,
   json,
+  redirect,
 } from "@remix-run/node";
 import { useLoaderData, useSubmit } from "@remix-run/react";
 import { db } from "../utils/db.server";
@@ -46,12 +47,16 @@ export const action: ActionFunction = async ({ request, params }) => {
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
 
-  const drawings = await db.drawing.findUniqueOrThrow({
+  const drawings = await db.drawing.findUnique({
     where: {
       id: params.drawingId,
       creatorId: userId,
     },
   });
+
+  if (!drawings) {
+    return redirect("/");
+  }
 
   return json({
     drawings,
