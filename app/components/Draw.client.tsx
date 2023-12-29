@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Tldraw,
   createTLStore,
@@ -5,24 +6,43 @@ import {
   useEditor,
 } from "@tldraw/tldraw";
 import "@tldraw/tldraw/tldraw.css";
-import { useEffect, useState } from "react";
+import debounce from "lodash.debounce";
 import { initialDrawingJson } from "../utils/constants";
 
-const ListenerComponent = () => {
+const ListenerComponent = ({
+  handleSaveDrawing,
+}: {
+  handleSaveDrawing: (stringifiedSnapshot: string) => void;
+}) => {
   const editor = useEditor();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const saveDrawingWithDebounce = debounce((snapshot: any) => {
+      const stringified = JSON.stringify(snapshot);
+      handleSaveDrawing(stringified);
+    }, 1000);
+
     editor.store.listen(() => {
       const snapshot = editor.store.getSnapshot();
-      const stringified = JSON.stringify(snapshot);
-      console.log("#### stringified", stringified);
+      saveDrawingWithDebounce(snapshot);
     });
-  }, [editor.store]);
+
+    return () => {
+      saveDrawingWithDebounce.cancel();
+    };
+  }, [editor.store, handleSaveDrawing]);
 
   return null;
 };
 
-function Draw({ drawingJson }: { drawingJson?: string }) {
+function Draw({
+  drawingJson,
+  handleSaveDrawing,
+}: {
+  drawingJson?: string;
+  handleSaveDrawing: (stringifiedSnapshot: string) => void;
+}) {
   const [store] = useState(() => {
     // Create the store
     const newStore = createTLStore({
@@ -44,7 +64,7 @@ function Draw({ drawingJson }: { drawingJson?: string }) {
   return (
     <div className="fixed inset-0">
       <Tldraw store={store}>
-        <ListenerComponent />
+        <ListenerComponent handleSaveDrawing={handleSaveDrawing} />
       </Tldraw>
     </div>
   );
