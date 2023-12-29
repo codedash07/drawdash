@@ -46,19 +46,19 @@ export const action: ActionFunction = async ({ request, params }) => {
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
 
-  const drawings = await db.drawing.findUnique({
+  const drawing = await db.drawing.findUnique({
     where: {
       id: params.drawingId,
       creatorId: userId,
     },
   });
 
-  if (!drawings) {
+  if (!drawing) {
     return redirect("/");
   }
 
   return json({
-    drawings,
+    drawing,
   });
 };
 
@@ -82,7 +82,7 @@ const Drawing = () => {
 
   return isHydrated ? (
     <Draw
-      drawingJson={data.drawings.content}
+      drawingJson={data.drawing.content}
       handleSaveDrawing={handleSaveDrawing}
     />
   ) : null;
