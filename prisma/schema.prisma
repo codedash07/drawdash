@@ -17,10 +17,10 @@ model User {
   updatedAt    DateTime @updatedAt
   username     String   @unique
   passwordHash String
-  drawings     Drawning[]
+  drawings     Drawing[]
 }
 
-model Drawning {
+model Drawing {
   id         String   @id @default(uuid())
   creatorId  String
   creator    User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
