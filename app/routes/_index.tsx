@@ -35,38 +35,43 @@ export default function Index() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div>
-      <span className="text-xl font-bold">{`Hi ${data.user.username}`}</span>
-      <form action="/logout" method="post">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          type="submit"
-        >
-          Logout
-        </button>
-      </form>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-800">{`Hi ${data.user.username}`}</h1>
+        <form action="/logout" method="post">
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded"
+            type="submit"
+          >
+            Logout
+          </button>
+        </form>
+      </div>
+
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold text-gray-700">Your Drawings</h2>
+        <ul className="grid grid-cols-3 gap-4 mt-4">
+          {data.drawings.map((drawing: { id: Key; name: string }) => (
+            <li key={drawing.id} className="bg-white shadow-lg rounded-lg p-4">
+              <Link
+                to={`/drawing/${drawing.id}`}
+                className="text-lg font-medium text-blue-500 hover:text-blue-600"
+              >
+                {drawing.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <form action="/new" method="post">
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mt-8"
           type="submit"
         >
           New Drawing
         </button>
       </form>
-
-      <ol>
-        {data.drawings.map((drawing: { id: Key; name: string }) => (
-          <li key={drawing.id}>
-            <Link
-              to={`/drawing/${drawing.id}`}
-              className="text-blue-500 hover:underline"
-            >
-              {drawing.name}
-            </Link>
-          </li>
-        ))}
-      </ol>
     </div>
   );
 }
