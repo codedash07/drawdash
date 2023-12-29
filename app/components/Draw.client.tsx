@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
   Tldraw,
   createTLStore,
@@ -16,24 +16,29 @@ const ListenerComponent = ({
   const editor = useEditor();
 
   useEffect(() => {
+    console.log("mounting");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const saveDrawingWithDebounce = debounce((snapshot: any) => {
       const stringified = JSON.stringify(snapshot);
       handleSaveDrawing(stringified);
     }, 1000);
 
-    editor.store.listen(() => {
+    const removeListener = editor.store.listen(() => {
       const snapshot = editor.store.getSnapshot();
       saveDrawingWithDebounce(snapshot);
     });
 
     return () => {
+      console.log("unmounting");
+      removeListener();
       saveDrawingWithDebounce.cancel();
     };
   }, [editor.store, handleSaveDrawing]);
 
   return null;
 };
+
+const Listener = memo(ListenerComponent);
 
 function Draw({
   drawingJson,
@@ -62,7 +67,7 @@ function Draw({
   return (
     <div className="fixed inset-0">
       <Tldraw store={store}>
-        <ListenerComponent handleSaveDrawing={handleSaveDrawing} />
+        <Listener handleSaveDrawing={handleSaveDrawing} />
       </Tldraw>
     </div>
   );
