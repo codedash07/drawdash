@@ -6,7 +6,7 @@ import {
   json,
   redirect,
 } from "@remix-run/node";
-import { useLoaderData, useSubmit } from "@remix-run/react";
+import { useLoaderData, useParams, useSubmit } from "@remix-run/react";
 import { db } from "../utils/db.server";
 import { requireUserId } from "../utils/session.server";
 import Draw from "../components/Draw.client";
@@ -65,15 +65,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 const Drawing = () => {
   const data = useLoaderData<typeof loader>();
   const submit = useSubmit();
+  const { drawingId } = useParams();
 
   const isHydrated = useHydrate();
 
   const handleSaveDrawing = useCallback(
     async (stringifiedSnapshot: string) => {
       console.log("handleSaveDrawing");
-      submit({ stringifiedSnapshot }, { method: "post" });
+      submit(
+        { stringifiedSnapshot },
+        { method: "post", action: "/drawing/" + drawingId }
+      );
     },
-    [submit]
+    [drawingId, submit]
   );
 
   return isHydrated ? (
