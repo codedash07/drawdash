@@ -1,14 +1,64 @@
 import { Key } from "react";
-import { json, LoaderFunction, type MetaFunction } from "@remix-run/node";
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  redirect,
+  type MetaFunction,
+} from "@remix-run/node";
 import { getUser, requireUserId } from "../utils/session.server";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import { db } from "../utils/db.server";
+import { badRequest } from "../utils/request.server";
 
 export const meta: MetaFunction = () => {
   return [
     { title: "Home | Drawdash" },
     { name: "description", content: "Home of Drawdash!" },
   ];
+};
+
+function validateDrawingName(name: string) {
+  if (name.length < 3) {
+    return "Enter at least 3 characters";
+  }
+}
+
+export const action: ActionFunction = async ({ request }) => {
+  const userId = await requireUserId(request);
+
+  const form = await request.formData();
+  const name = form.get("name");
+
+  if (typeof name !== "string") {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: "Form not submitted correctly.",
+    });
+  }
+
+  const fields = { name };
+  const fieldErrors = {
+    name: validateDrawingName(name),
+  };
+
+  if (Object.values(fieldErrors).some(Boolean)) {
+    return badRequest({
+      fieldErrors,
+      fields,
+      formError: null,
+    });
+  }
+
+  const drawingData = await db.drawing.create({
+    data: {
+      creatorId: userId,
+      name,
+    },
+  });
+
+  return redirect("/drawing/" + drawingData.id, { status: 303 });
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -32,6 +82,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
+  const newActionData = useActionData<typeof action>();
   const data = useLoaderData<typeof loader>();
 
   return (
@@ -48,22 +99,42 @@ export default function Index() {
         </form>
       </div>
 
-      <form action="/new" method="post" className="mt-12">
+      <form action="?index" method="post" className="mt-12">
         <h2 className="text-lg font-semibold text-gray-700">
           Create a New Drawing
         </h2>
-        <input
-          type="text"
-          name="drawingName"
-          placeholder="Drawing Name"
-          className="border border-gray-300 rounded-md px-4 py-2 mt-4 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mt-4"
-          type="submit"
-        >
-          Create
-        </button>
+
+        <div className="flex justify-start items-start">
+          <div>
+            <input
+              type="text"
+              id="name-input"
+              name="name"
+              placeholder="Drawing Name"
+              className="border border-gray-300 rounded-md px-4 py-2 mt-4 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-errormessage={
+                newActionData?.fieldErrors?.name ? "name-error" : undefined
+              }
+            />
+
+            {newActionData?.fieldErrors?.name ? (
+              <p
+                className="text-red-500 text-sm mt-1"
+                role="alert"
+                id="name-error"
+              >
+                {newActionData.fieldErrors.name}
+              </p>
+            ) : null}
+          </div>
+
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mt-4"
+            type="submit"
+          >
+            Create
+          </button>
+        </div>
       </form>
 
       <div className="mt-12">
