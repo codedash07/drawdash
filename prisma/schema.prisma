@@ -27,5 +27,5 @@ model Drawing {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   name       String
-  content    String
+  content    String?
 }
