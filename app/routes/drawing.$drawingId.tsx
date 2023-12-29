@@ -74,7 +74,7 @@ const Drawing = () => {
       console.log("handleSaveDrawing");
       submit(
         { stringifiedSnapshot },
-        { method: "post", action: "/drawing/" + drawingId }
+        { method: "post", action: "/drawing/" + drawingId, navigate: false }
       );
     },
     [drawingId, submit]
