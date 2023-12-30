@@ -1,5 +1,13 @@
+import { MetaFunction } from "@remix-run/node";
 import logo from "../assets/logos/logo.png"; // Update the path as needed
 import { Link } from "@remix-run/react";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Drawdash" },
+    { name: "description", content: "Welcome to Drawdash!" },
+  ];
+};
 
 function App() {
   return (
