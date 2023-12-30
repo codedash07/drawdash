@@ -87,8 +87,8 @@ export default function Index() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">{`Hi ${data.user.username}`}</h1>
+      <div className="flex flex-col md:flex-row justify-between items-center">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-0">{`Hi ${data.user.username}`}</h1>
         <form action="/logout" method="post">
           <button
             className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded"
@@ -104,14 +104,14 @@ export default function Index() {
           Create a New Drawing
         </h2>
 
-        <div className="flex justify-start items-start">
+        <div className="flex flex-row justify-start items-start pt-4">
           <div>
             <input
               type="text"
               id="name-input"
               name="name"
               placeholder="Drawing Name"
-              className="border border-gray-300 rounded-md px-4 py-2 mt-4 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-errormessage={
                 newActionData?.fieldErrors?.name ? "name-error" : undefined
               }
@@ -129,7 +129,7 @@ export default function Index() {
           </div>
 
           <button
-            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mt-4"
+            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded md:mt-0 md:ml-4 ml-2"
             type="submit"
           >
             Create
@@ -139,10 +139,10 @@ export default function Index() {
 
       {data.drawings.length > 0 ? (
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold text-gray-700">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-700">
             Your Drawings
           </h2>
-          <ul className="grid grid-cols-3 gap-4 mt-4">
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             {data.drawings.map((drawing: { id: Key; name: string }) => (
               <li
                 key={drawing.id}
