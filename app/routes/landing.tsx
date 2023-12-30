@@ -1,47 +1,34 @@
-import { MetaFunction } from "@remix-run/node";
-import logo from "../assets/logos/logo.png";
-
-export const meta: MetaFunction = () => {
-  return [{ title: "Drawdash" }, { name: "description", content: "Drawing!" }];
-};
+import logo from "../assets/logos/logo.png"; // Update the path as needed
+import { Link } from "@remix-run/react";
 
 function App() {
   return (
     <div className="App">
-      {/* Navbar */}
-      <nav className="bg-white p-4 shadow-md text-gray-800">
-        <div className="container mx-auto flex justify-between items-center">
-          <img src={logo} alt="Drawdash Logo" className="h-16" />
-          {/* Logo size increased */}
-          <div>
-            <a href="#features" className="px-4 hover:text-blue-500">
-              Features
-            </a>
-            <a href="#about" className="px-4 hover:text-blue-500">
-              About
-            </a>
-            <a href="#contact" className="px-4 hover:text-blue-500">
-              Contact
-            </a>
-          </div>
+      {/* Hero Section with Larger Logo */}
+      <header className="relative bg-blue-100 text-gray-800 text-center py-20">
+        <div className="container mx-auto">
+          <img src={logo} alt="Drawdash Logo" className="mx-auto mb-4 h-36" />
+          <h1 className="text-5xl font-bold mb-4">Welcome to Drawdash</h1>
+          <p className="text-xl mb-6">
+            Your personal digital canvas for creativity and collaboration.
+          </p>
+          <Link
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+            to="/login"
+          >
+            Start Drawing
+          </Link>
         </div>
-      </nav>
-
-      {/* Hero Section */}
-      <header className="bg-blue-100 text-gray-800 text-center py-20">
-        <h1 className="text-5xl font-bold mb-4">Welcome to Drawdash</h1>
-        <p className="text-xl">Your personal digital canvas for creativity</p>
       </header>
 
       {/* Features Section */}
       <section id="features" className="py-10">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">
+          <h2 className="text-3xl font-bold mb-8 text-blue-500">
             Powerful Features of Drawdash
           </h2>
-          <div className="flex flex-wrap justify-center">
-            {/* Detailed Feature 1 */}
-            <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="feature-card">
               <h3 className="text-xl font-semibold mb-2">
                 Advanced Drawing Tools
               </h3>
@@ -53,9 +40,8 @@ function App() {
                 provides the perfect tools for your artistic journey.
               </p>
             </div>
-            {/* Detailed Feature 2 */}
-            <div className="w-full md:w-1/2 lg:w-1/3 p-4">
-              <h3 className="text-xl font-semibold mb-2">Layer Management</h3>
+            <div className="feature-card">
+              <h3 className="text-xl font-semibold mb-2">Advanced Layering</h3>
               <p>
                 Manage your artwork with ease using our intuitive layer system.
                 Add, remove, and reorder layers to create complex drawings
@@ -64,8 +50,7 @@ function App() {
                 modes, giving you complete control over your creation.
               </p>
             </div>
-            {/* Detailed Feature 3 */}
-            <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+            <div className="feature-card">
               <h3 className="text-xl font-semibold mb-2">
                 Cloud Saving and Accessibility
               </h3>
@@ -77,21 +62,20 @@ function App() {
                 your work on the go or share it with others.
               </p>
             </div>
-            {/* Additional Detailed Features */}
-            {/* ... */}
+            {/* Additional Feature Cards */}
           </div>
         </div>
       </section>
 
       {/* About Section */}
       <section id="about" className="bg-gray-100 py-10">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">About Drawdash</h2>
-          <p className="max-w-2xl mx-auto">
-            Drawdash is the perfect place for artists and hobbyists to express
-            their creativity. Whether you&apos;re a professional artist or just
-            starting out, our platform offers a user-friendly interface with
-            powerful tools to bring your artistic visions to life.
+        <div className="container mx-auto text-center p-4">
+          <h2 className="text-3xl font-bold mb-8">About Us</h2>
+          <p>
+            Drawdash is a platform born from the passion for art and design.
+            It&apos;s a space where creativity meets technology, allowing
+            artists and designers of all levels to explore and express their
+            talents.
           </p>
         </div>
       </section>
@@ -99,10 +83,14 @@ function App() {
       {/* Contact Section */}
       <section id="contact" className="py-10">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">Get in Touch</h2>
-          <p className="mb-4">
-            Questions or feedback? I&apos;d love to hear from you.
+          <h2 className="text-3xl font-bold mb-8 text-blue-500">
+            Get in Touch
+          </h2>
+          <p>
+            Have questions or suggestions? We&apos;re all ears. Reach out to us,
+            and let&apos;s make Drawdash even better together.
           </p>
+          {/* Insert Contact Form Here */}
           <a
             href="mailto:aryankush025@gmail.com"
             className="underline text-blue-500"
@@ -112,38 +100,33 @@ function App() {
         </div>
       </section>
 
-      {/* Footer with Developer Details */}
-      <footer className="bg-gray-100 text-gray-800 text-center p-6">
-        <p>Follow me on social media for the latest updates!</p>
-        {/* Social Media Links */}
-        {/* ... */}
-        <div className="mt-4">
-          <p className="font-semibold">Developed by Aryan Agarwal</p>
-          <a
-            href="https://github.com/aryankush25"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline px-2"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://www.linkedin.com/in/aryankush25/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline px-2"
-          >
-            LinkedIn
-          </a>
-          <a
-            href="https://twitter.com/aryankush25"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline px-2"
-          >
-            Twitter
-          </a>
-        </div>
+      {/* Footer */}
+      <footer className="bg-blue-500 text-white text-center p-6">
+        <p className="font-semibold">Crafted with Passion by Aryan Agarwal</p>
+        <a
+          href="https://github.com/aryankush25"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline px-2"
+        >
+          GitHub
+        </a>
+        <a
+          href="https://www.linkedin.com/in/aryankush25/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline px-2"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="https://twitter.com/aryankush25"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline px-2"
+        >
+          Twitter
+        </a>
       </footer>
     </div>
   );
