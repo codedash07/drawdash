@@ -6,10 +6,11 @@ import {
   redirect,
   type MetaFunction,
 } from "@remix-run/node";
-import { getUser, requireUserId } from "../utils/session.server";
+import { getUser, getUserId, requireUserId } from "../utils/session.server";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import { db } from "../utils/db.server";
 import { badRequest } from "../utils/request.server";
+import Landing from "../components/landing";
 
 export const meta: MetaFunction = () => {
   return [
@@ -62,7 +63,16 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await requireUserId(request);
+  const userId = await getUserId(request);
+
+  if (!userId) {
+    return json({
+      userId: null,
+      user: null,
+      drawings: [],
+    });
+  }
+
   const user = await getUser(request);
 
   const drawings = await db.drawing.findMany({
@@ -84,6 +94,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const newActionData = useActionData<typeof action>();
   const data = useLoaderData<typeof loader>();
+
+  if (!data.userId) {
+    return <Landing />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
