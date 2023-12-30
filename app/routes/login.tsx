@@ -130,9 +130,9 @@ export default function Login() {
   const [searchParams] = useSearchParams();
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-96 p-8 bg-white rounded shadow">
-        <h1 className="text-2xl font-bold mb-4">Dashpad</h1>
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="w-full max-w-md p-8 bg-white rounded shadow mx-4">
+        <h1 className="text-xl md:text-2xl font-bold mb-4">Dashpad</h1>
         <form method="post">
           <input
             type="hidden"
@@ -225,7 +225,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded mt-4 hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded mt-4 hover:bg-blue-600"
           >
             Submit
           </button>
