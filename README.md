@@ -16,12 +16,12 @@ Welcome to DrawDash! A versatile and convenient digital drawing board designed t
 - An active internet connection.
 
 ### Accessing DrawDash
-- Visit [DrawDash Website](drawdash-two.vercel.app) in your browser.
+- Visit [DrawDash Website](drawdash.in) in your browser.
 - Sign up for a new account or log in to your existing one.
 
 ## Usage Guide
 1. **Create a Board**: Simply enter a name for your new board and click 'Create' to begin brainstorming.
-2. **Select Tools**: Pick from a range of tools and colors to visualize your ideas.
+2. **Select Tools**: Pick from a range of tools and colours to visualize your ideas.
 3. **Auto-Save Feature**: Your board is continuously saved automatically, so you never have to worry about losing your work.
 4. **Manage Your Boards**: Navigate to the 'Home' page to access your saved boards. Here, you can start a new board or continue editing an existing one.
 
