@@ -16,7 +16,7 @@ Welcome to DrawDash! A versatile and convenient digital drawing board designed t
 - An active internet connection.
 
 ### Accessing DrawDash
-- Visit [DrawDash Website](drawdash.in) in your browser.
+- Visit [DrawDash Website](https://www.drawdash.in/) in your browser.
 - Sign up for a new account or log in to your existing one.
 
 ## Usage Guide
