@@ -3,6 +3,7 @@ import {
   ActionFunctionArgs,
   LoaderFunction,
 } from "@remix-run/node";
+import { motion } from "framer-motion";
 import { db } from "../utils/db.server";
 import { useSearchParams, useActionData } from "@remix-run/react";
 import { badRequest } from "../utils/request.server";
@@ -129,107 +130,174 @@ export default function Login() {
   const actionData = useActionData<typeof action>();
   const [searchParams] = useSearchParams();
 
-  return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-md p-8 bg-white rounded shadow mx-4">
-        <h1 className="text-xl md:text-2xl font-bold mb-4">Dashpad</h1>
-        <form method="post">
-          <input
-            type="hidden"
-            name="redirectTo"
-            value={searchParams.get("redirectTo") ?? undefined}
-          />
-          <fieldset className="mb-4">
-            <legend className="text-lg font-semibold">
-              Login or Register?
-            </legend>
-            <label className="block mt-2">
-              <input
-                type="radio"
-                name="loginType"
-                value="login"
-                defaultChecked={
-                  !actionData?.fields?.loginType ||
-                  actionData?.fields?.loginType === "login"
-                }
-                className="mr-2"
-              />
-              Login
-            </label>
-            <label className="block mt-2">
-              <input
-                type="radio"
-                name="loginType"
-                value="register"
-                defaultChecked={actionData?.fields?.loginType === "register"}
-                className="mr-2"
-              />
-              Register
-            </label>
-          </fieldset>
-          <div className="mb-4">
-            <label htmlFor="username-input" className="block">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username-input"
-              name="username"
-              defaultValue={actionData?.fields?.username}
-              aria-errormessage={
-                actionData?.fieldErrors?.username ? "username-error" : undefined
-              }
-              className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            {actionData?.fieldErrors?.username ? (
-              <p
-                className="text-red-500 text-sm mt-1"
-                role="alert"
-                id="username-error"
-              >
-                {actionData.fieldErrors.username}
-              </p>
-            ) : null}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password-input" className="block">
-              Password
-            </label>
-            <input
-              id="password-input"
-              name="password"
-              type="password"
-              defaultValue={actionData?.fields?.password}
-              aria-errormessage={
-                actionData?.fieldErrors?.password ? "password-error" : undefined
-              }
-              className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            {actionData?.fieldErrors?.password ? (
-              <p
-                className="text-red-500 text-sm mt-1"
-                role="alert"
-                id="password-error"
-              >
-                {actionData.fieldErrors.password}
-              </p>
-            ) : null}
-          </div>
-          <div id="form-error-message">
-            {actionData?.formError ? (
-              <p className="text-red-500 text-sm" role="alert">
-                {actionData.formError}
-              </p>
-            ) : null}
-          </div>
+  const background = {
+    hidden: { scale: 1, opacity: 0 },
+    visible: { scale: 1, opacity: 1, transition: { duration: 0.5 } },
+  };
+  const backdrop = {
+    initial: {
+      height: 0,
+      overflow: "hidden",
+      backdropFilter: "blur(0px)",
+    },
+    expanded: {
+      height: "auto", // Adjust to the desired final height, or use 'auto'
+      transition: { duration: 1 }, // Duration for the height transition
+    },
+    blurred: {
+      backdropFilter: "blur(40px)", // Adjust the blur value as needed
+      transition: { duration: 5, delay: 1 }, // Duration for the blur transition
+    },
+  };
+  const drawdash = {
+    initial: {
+      width: 0,
+      overflow: "hidden",
+      transition: { duration: 0 }, // Instantly start at 0 width
+    },
+    expanded: {
+      width: 300, // Adjust to the desired final width
+      transition: {
+        duration: 1, // Duration for the width transition
+        delay: 1, // 1 second delay before the animation starts
+      },
+    },
+  };
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded mt-4 hover:bg-blue-600"
-          >
-            Submit
-          </button>
-        </form>
+  return (
+    <div className="relative">
+      <motion.div
+        className="h-screen z-0 overflow-hidden"
+        initial="hidden"
+        animate="visible"
+        custom={-1}
+        variants={background}
+      >
+        <img src="/backdrop.jpg" alt="landing-page" />
+      </motion.div>
+      <div className="flex flex-col absolute top-0 w-full justify-center items-center rounded-2xl min-h-screen">
+        <motion.div
+          initial="initial"
+          animate={["expanded", "blurred"]}
+          custom={-1}
+          variants={backdrop}
+          className="w-full max-w-md bg-white bg-opacity-35 mb-20 rounded-2xl shadow mx-4"
+        >
+          <div className="w-full p-8">
+            <h1 className="text-xl md:text-2xl font-bold mb-4">Dashpad</h1>
+            <form method="post">
+              <input
+                type="hidden"
+                name="redirectTo"
+                value={searchParams.get("redirectTo") ?? undefined}
+              />
+              <fieldset className="mb-4">
+                <legend className="text-lg font-semibold">
+                  Login or Register?
+                </legend>
+                <label className="block mt-2">
+                  <input
+                    type="radio"
+                    name="loginType"
+                    value="login"
+                    defaultChecked={
+                      !actionData?.fields?.loginType ||
+                      actionData?.fields?.loginType === "login"
+                    }
+                    className="mr-2"
+                  />
+                  Login
+                </label>
+                <label className="block mt-2">
+                  <input
+                    type="radio"
+                    name="loginType"
+                    value="register"
+                    defaultChecked={
+                      actionData?.fields?.loginType === "register"
+                    }
+                    className="mr-2"
+                  />
+                  Register
+                </label>
+              </fieldset>
+              <div className="mb-4">
+                <label htmlFor="username-input" className="block">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  id="username-input"
+                  name="username"
+                  defaultValue={actionData?.fields?.username}
+                  aria-errormessage={
+                    actionData?.fieldErrors?.username
+                      ? "username-error"
+                      : undefined
+                  }
+                  className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
+                />
+                {actionData?.fieldErrors?.username ? (
+                  <p
+                    className="text-red-500 text-sm mt-1"
+                    role="alert"
+                    id="username-error"
+                  >
+                    {actionData.fieldErrors.username}
+                  </p>
+                ) : null}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="password-input" className="block">
+                  Password
+                </label>
+                <input
+                  id="password-input"
+                  name="password"
+                  type="password"
+                  defaultValue={actionData?.fields?.password}
+                  aria-errormessage={
+                    actionData?.fieldErrors?.password
+                      ? "password-error"
+                      : undefined
+                  }
+                  className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
+                />
+                {actionData?.fieldErrors?.password ? (
+                  <p
+                    className="text-red-500 text-sm mt-1"
+                    role="alert"
+                    id="password-error"
+                  >
+                    {actionData.fieldErrors.password}
+                  </p>
+                ) : null}
+              </div>
+              <div id="form-error-message">
+                {actionData?.formError ? (
+                  <p className="text-red-500 text-sm" role="alert">
+                    {actionData.formError}
+                  </p>
+                ) : null}
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 px-4 rounded mt-4 hover:bg-blue-600"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+        </motion.div>
+        <motion.div
+          initial="initial"
+          animate="expanded"
+          variants={drawdash}
+          className="absolute bottom-16"
+        >
+          <img src="/drawdash.svg" alt="landing" width={500} />
+        </motion.div>
       </div>
     </div>
   );
