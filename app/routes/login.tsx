@@ -165,7 +165,7 @@ export default function Login() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative bg-black">
       <motion.div
         className="h-screen z-0 overflow-hidden"
         initial="hidden"
@@ -175,13 +175,13 @@ export default function Login() {
       >
         <img src="/backdrop.jpg" alt="landing-page" />
       </motion.div>
-      <div className="flex flex-col absolute top-0 w-full justify-center items-center rounded-2xl min-h-screen">
+      <div className="flex flex-col text-white absolute top-0 w-full justify-center items-center rounded-2xl min-h-screen">
         <motion.div
           initial="initial"
           animate={["expanded", "blurred"]}
           custom={-1}
           variants={backdrop}
-          className="w-full max-w-md bg-white bg-opacity-35 mb-20 rounded-2xl shadow mx-4"
+          className="w-full max-w-md bg-black bg-opacity-30 mb-20 rounded-2xl shadow mx-4"
         >
           <div className="w-full p-8">
             <h1 className="text-xl md:text-2xl font-bold mb-4">Dashpad</h1>
@@ -235,7 +235,7 @@ export default function Login() {
                       ? "username-error"
                       : undefined
                   }
-                  className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
+                  className="w-full border text-black border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 {actionData?.fieldErrors?.username ? (
                   <p
@@ -261,7 +261,7 @@ export default function Login() {
                       ? "password-error"
                       : undefined
                   }
-                  className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
+                  className="w-full border text-black border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 {actionData?.fieldErrors?.password ? (
                   <p
