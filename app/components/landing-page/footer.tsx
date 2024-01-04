@@ -61,7 +61,7 @@ const Footer = () => {
               Join our community for the latest updates and creative tips
             </p>
             <input
-              className="w-full text-[#ECF0F1] max-w-sm px-6 py-3 rounded-full placeholder:text-[#ECF0F1] placeholder:opacity-50 focus:outline-none"
+              className="w-full text-[#000000] max-w-sm px-6 py-3 rounded-full placeholder:text-[#000000] placeholder:opacity-50 focus:outline-none"
               placeholder="Enter your email"
             />
             <p className="pt-8 text-sm">

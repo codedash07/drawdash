@@ -95,14 +95,14 @@ export default function Index() {
   const newActionData = useActionData<typeof action>();
   const data = useLoaderData<typeof loader>();
 
-  if (!data.userId) {
+  if (data.userId) {
     return <Landing />;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-center">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-0">{`Hi ${data.user.username}`}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-0">{`Hi Yash`}</h1>
         <form action="/logout" method="post">
           <button
             className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded"

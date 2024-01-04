@@ -34,8 +34,8 @@ const ThirdSection = () => {
   };
 
   const slideInVariants = {
-    hidden: { x: 200, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.8 } },
+    hidden: { scale: 1, opacity: 0 },
+    visible: { scale: 1, opacity: 1, transition: { duration: 0.8 } },
   };
 
   return (

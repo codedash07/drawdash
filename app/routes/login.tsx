@@ -75,6 +75,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       formError: null,
     });
   }
+  console.log(loginType);
 
   switch (loginType) {
     case "login": {
@@ -184,7 +185,9 @@ export default function Login() {
           className="w-full max-w-md bg-black bg-opacity-30 mb-20 rounded-2xl shadow mx-4"
         >
           <div className="w-full p-8">
-            <h1 className="text-xl md:text-2xl font-bold mb-4">Dashpad</h1>
+            <h1 className="text-xl md:text-2xl font-bold mb-4 font-borel">
+              Dashpad
+            </h1>
             <form method="post">
               <input
                 type="hidden"
@@ -195,31 +198,33 @@ export default function Login() {
                 <legend className="text-lg font-semibold">
                   Login or Register?
                 </legend>
-                <label className="block mt-2">
-                  <input
-                    type="radio"
-                    name="loginType"
-                    value="login"
-                    defaultChecked={
-                      !actionData?.fields?.loginType ||
-                      actionData?.fields?.loginType === "login"
-                    }
-                    className="mr-2"
-                  />
-                  Login
-                </label>
-                <label className="block mt-2">
-                  <input
-                    type="radio"
-                    name="loginType"
-                    value="register"
-                    defaultChecked={
-                      actionData?.fields?.loginType === "register"
-                    }
-                    className="mr-2"
-                  />
-                  Register
-                </label>
+                <div className="flex items-center justify-between max-w-[250px]">
+                  <label className="block mt-2">
+                    <input
+                      type="radio"
+                      name="loginType"
+                      value="login"
+                      defaultChecked={
+                        !actionData?.fields?.loginType ||
+                        actionData?.fields?.loginType === "login"
+                      }
+                      className="mr-2"
+                    />
+                    Login
+                  </label>
+                  <label className="block mt-2">
+                    <input
+                      type="radio"
+                      name="loginType"
+                      value="register"
+                      defaultChecked={
+                        actionData?.fields?.loginType === "register"
+                      }
+                      className="mr-2"
+                    />
+                    Register
+                  </label>
+                </div>
               </fieldset>
               <div className="mb-4">
                 <label htmlFor="username-input" className="block">

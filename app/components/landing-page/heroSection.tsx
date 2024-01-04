@@ -18,14 +18,14 @@ const HeroSection = () => {
     <div className="max-w-7xl mx-auto">
       <div className="pt-8 flex w-full items-center justify-between">
         <motion.div
-          className="flex flex-col gap-8 max-w-[700px]"
+          className="flex flex-col gap-4 max-w-[700px]"
           initial="hidden"
           animate="visible"
           custom={-1}
           variants={sectionVariants}
         >
-          <p className="text-7xl">
-            Welcome to <span className="font-semibold">Drawdash</span>
+          <p className="text-7xl font-borel leading-[90px]">
+            Welcome to <span className="font-semibold ">Drawdash</span>
           </p>
           <p className="text-3xl">
             Your personal digital canvas for creativity and collaboration.
