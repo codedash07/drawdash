@@ -6,6 +6,7 @@ import {
   redirect,
   type MetaFunction,
 } from "@remix-run/node";
+import { motion } from "framer-motion";
 import { getUser, getUserId, requireUserId } from "../utils/session.server";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import { db } from "../utils/db.server";
@@ -94,44 +95,93 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const newActionData = useActionData<typeof action>();
   const data = useLoaderData<typeof loader>();
+  const containerVariants = {
+    hidden: { opacity: 0, y: -400 },
+    visible: { opacity: 1, y: 0, transition: { delay: 0.3, duration: 0.5 } },
+  };
 
-  if (data.userId) {
+  const buttonVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  };
+
+  const drawdash = {
+    initial: {
+      width: 0,
+      overflow: "hidden",
+      transition: { duration: 0 }, // Instantly start at 0 width
+    },
+    expanded: {
+      width: 300, // Adjust to the desired final width
+      transition: {
+        duration: 1, // Duration for the width transition
+        delay: 1, // 1 second delay before the animation starts
+      },
+    },
+  };
+  if (!data.userId) {
     return <Landing />;
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-0">{`Hi Yash`}</h1>
-        <form action="/logout" method="post">
-          <button
-            className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded"
-            type="submit"
-          >
-            Logout
-          </button>
-        </form>
+    <div className="relative h-screen">
+      <div className="absolute -z-20 top-0 left-0 h-screen overflow-hidden">
+        <img src="/background-dashboard.jpg" alt="landing-page" />
       </div>
+      <motion.div
+        initial="hidden"
+        variants={containerVariants}
+        animate="visible"
+        className="container mx-auto p-6 bg-gray-50 bg-opacity-70 backdrop-blur-lg rounded-b-xl"
+      >
+        <motion.div
+          initial="initial"
+          animate="expanded"
+          variants={drawdash}
+          className="flex w-full justify-center"
+        >
+          <img src="/drawdash.svg" alt="landing" width={500} />
+        </motion.div>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+          <h1 className="text-3xl font-semibold text-gray-800">{`Hi, ${data.user.username}`}</h1>
+          <form action="/logout" method="post">
+            <motion.button
+              whileHover="hover"
+              whileTap="tap"
+              variants={buttonVariants}
+              className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-6 rounded transition duration-200"
+              type="submit"
+            >
+              Logout
+            </motion.button>
+          </form>
+        </div>
 
-      <form action="?index" method="post" className="mt-12">
-        <h2 className="text-lg font-semibold text-gray-700">
-          Create a New Drawing
-        </h2>
+        <form action="?index" method="post" className="mb-10">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            Create a New Drawing
+          </h2>
 
-        <div className="flex flex-row justify-start items-start pt-4">
-          <div>
+          <div className="flex flex-col md:flex-row items-center gap-4">
             <input
               type="text"
               id="name-input"
               name="name"
               placeholder="Drawing Name"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full md:w-auto flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 transition duration-200"
               aria-errormessage={
                 newActionData?.fieldErrors?.name ? "name-error" : undefined
               }
             />
 
-            {newActionData?.fieldErrors?.name ? (
+            <button
+              className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded transition duration-200"
+              type="submit"
+            >
+              Create
+            </button>
+
+            {newActionData?.fieldErrors?.name && (
               <p
                 className="text-red-500 text-sm mt-1"
                 role="alert"
@@ -139,40 +189,35 @@ export default function Index() {
               >
                 {newActionData.fieldErrors.name}
               </p>
-            ) : null}
+            )}
           </div>
+        </form>
 
-          <button
-            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded md:mt-0 md:ml-4 ml-2"
-            type="submit"
-          >
-            Create
-          </button>
-        </div>
-      </form>
-
-      {data.drawings.length > 0 ? (
-        <div className="mt-12">
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-700">
-            Your Drawings
-          </h2>
-          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            {data.drawings.map((drawing: { id: Key; name: string }) => (
-              <li
-                key={drawing.id}
-                className="bg-white shadow-lg rounded-lg p-4"
-              >
-                <Link
-                  to={`/drawing/${drawing.id}`}
-                  className="text-lg font-medium text-blue-500 hover:text-blue-600"
-                >
-                  {drawing.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+        {data.drawings.length > 0 && (
+          <div className="border-t-2">
+            <h2 className="text-2xl text-center py-2 mt-6 font-semibold text-gray-700 mb-4">
+              Your Drawings
+            </h2>
+            <div className="flex items-center justify-center">
+              <ul className="flex flex-wrap gap-6 justify-center">
+                {data.drawings.map((drawing: { id: Key; name: string }) => (
+                  <li
+                    key={drawing.id}
+                    className="bg-white shadow rounded-lg p-4 hover:shadow-lg transition duration-200"
+                  >
+                    <Link
+                      to={`/drawing/${drawing.id}`}
+                      className="text-lg font-medium text-blue-500 hover:text-blue-600 transition duration-200"
+                    >
+                      {drawing.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+      </motion.div>
     </div>
   );
 }
