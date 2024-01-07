@@ -105,20 +105,6 @@ export default function Index() {
     tap: { scale: 0.95 },
   };
 
-  const drawdash = {
-    initial: {
-      width: 0,
-      overflow: "hidden",
-      transition: { duration: 0 }, // Instantly start at 0 width
-    },
-    expanded: {
-      width: 300, // Adjust to the desired final width
-      transition: {
-        duration: 1, // Duration for the width transition
-        delay: 1, // 1 second delay before the animation starts
-      },
-    },
-  };
   if (!data.userId) {
     return <Landing />;
   }
@@ -128,20 +114,13 @@ export default function Index() {
       <div className="absolute -z-20 top-0 left-0 h-screen overflow-hidden">
         <img src="/background-dashboard.jpg" alt="landing-page" />
       </div>
+
       <motion.div
         initial="hidden"
         variants={containerVariants}
         animate="visible"
         className="container mx-auto p-6 bg-gray-50 bg-opacity-70 backdrop-blur-lg rounded-b-xl"
       >
-        <motion.div
-          initial="initial"
-          animate="expanded"
-          variants={drawdash}
-          className="flex w-full justify-center"
-        >
-          <img src="/drawdash.svg" alt="landing" width={500} />
-        </motion.div>
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <h1 className="text-3xl font-semibold text-gray-800">{`Hi, ${data.user.username}`}</h1>
           <form action="/logout" method="post">
